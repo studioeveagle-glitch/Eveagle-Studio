@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --eveagle-bg: #0B0B0D;
+  --eveagle-bg-secondary: #141419;
+  --eveagle-accent: #FF4D2E;
+  --eveagle-text: #F4F4F5;
+  --eveagle-text-muted: #A6A6AA;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--eveagle-bg);
+  color: var(--eveagle-text);
+  font-family: var(--font-inter), 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+.font-display {
+  font-family: var(--font-sora), 'Sora', sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), 'IBM Plex Mono', monospace;
+}
+
+/* Grain overlay */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Button styles */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-eveagle-accent text-eveagle-bg font-medium rounded-sm transition-all duration-300;
+}
+
+.btn-primary:hover {
+  @apply -translate-y-0.5;
+  box-shadow: 0 8px 30px rgba(255, 77, 46, 0.4);
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 border border-eveagle-text/30 text-eveagle-bg font-medium rounded-sm transition-all duration-300 bg-transparent;
+}
+
+.btn-secondary:hover {
+  @apply border-eveagle-accent text-eveagle-accent -translate-y-0.5;
+}
+
+/* Form styles */
+.form-input {
+  @apply w-full bg-eveagle-bg border border-eveagle-bg rounded-sm px-4 py-3 text-eveagle-text placeholder:text-eveagle-text-muted/50 focus:outline-none focus:border-eveagle-accent transition-all duration-300;
+}
+
+.form-input:focus {
+  box-shadow: 0 0 0 3px rgba(255, 77, 46, 0.1);
+}
+
+/* Text shadow */
+.text-shadow-cinematic {
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Shadow utilities */
+.shadow-cinematic {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Nav hover effect */
+.nav-hover-btn {
+  position: relative;
+}
+
+.nav-hover-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #FF4D2E;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.nav-hover-btn:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0B0D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a2f;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF4D2E;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(255, 77, 46, 0.3);
+  color: #F4F4F5;
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.33%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+  
+  .animate-marquee {
+    animation: none;
+  }
+}
