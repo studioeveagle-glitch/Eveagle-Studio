@@ -116,14 +116,14 @@ export default function Navbar() {
         const style2 = textStyles[index2];
         
         if (studioRef.current) {
-          const scale1 = parseFloat(style1.transform.match(/scale\(([-\d.]+)\)/)?.[1] || 1);
-          const scale2 = parseFloat(style2.transform.match(/scale\(([-\d.]+)\)/)?.[1] || 1);
-          const rotate1 = parseFloat(style1.transform.match(/rotate\(([-\d.]+)deg\)/)?.[1] || 0);
-          const rotate2 = parseFloat(style2.transform.match(/rotate\(([-\d.]+)deg\)/)?.[1] || 0);
-          const skewX1 = parseFloat(style1.transform.match(/skewX\(([-\d.]+)deg\)/)?.[1] || 0);
-          const skewX2 = parseFloat(style2.transform.match(/skewX\(([-\d.]+)deg\)/)?.[1] || 0);
-          const skewY1 = parseFloat(style1.transform.match(/skewY\(([-\d.]+)deg\)/)?.[1] || 0);
-          const skewY2 = parseFloat(style2.transform.match(/skewY\(([-\d.]+)deg\)/)?.[1] || 0);
+          const scale1 = parseFloat(style1.transform.match(/scale\(([-\d.]+)\)/)?.[1] ?? "1");
+          const scale2 = parseFloat(style2.transform.match(/scale\(([-\d.]+)\)/)?.[1] ?? "1");
+          const rotate1 = parseFloat(style1.transform.match(/rotate\(([-\d.]+)deg\)/)?.[1] ?? "0");
+          const rotate2 = parseFloat(style2.transform.match(/rotate\(([-\d.]+)deg\)/)?.[1] ?? "0");
+          const skewX1 = parseFloat(style1.transform.match(/skewX\(([-\d.]+)deg\)/)?.[1] ?? "0");
+          const skewX2 = parseFloat(style2.transform.match(/skewX\(([-\d.]+)deg\)/)?.[1] ?? "0");
+          const skewY1 = parseFloat(style1.transform.match(/skewY\(([-\d.]+)deg\)/)?.[1] ?? "0");
+          const skewY2 = parseFloat(style2.transform.match(/skewY\(([-\d.]+)deg\)/)?.[1] ?? "0");
 
           gsap.to(studioRef.current, {
             fontFamily: progress > 0.5 ? style2.fontFamily : style1.fontFamily,
