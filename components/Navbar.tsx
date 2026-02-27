@@ -116,6 +116,15 @@ export default function Navbar() {
         const style2 = textStyles[index2];
         
         if (studioRef.current) {
+          const scale1 = parseFloat(style1.transform.match(/scale\(([-\d.]+)\)/)?.[1] || 1);
+          const scale2 = parseFloat(style2.transform.match(/scale\(([-\d.]+)\)/)?.[1] || 1);
+          const rotate1 = parseFloat(style1.transform.match(/rotate\(([-\d.]+)deg\)/)?.[1] || 0);
+          const rotate2 = parseFloat(style2.transform.match(/rotate\(([-\d.]+)deg\)/)?.[1] || 0);
+          const skewX1 = parseFloat(style1.transform.match(/skewX\(([-\d.]+)deg\)/)?.[1] || 0);
+          const skewX2 = parseFloat(style2.transform.match(/skewX\(([-\d.]+)deg\)/)?.[1] || 0);
+          const skewY1 = parseFloat(style1.transform.match(/skewY\(([-\d.]+)deg\)/)?.[1] || 0);
+          const skewY2 = parseFloat(style2.transform.match(/skewY\(([-\d.]+)deg\)/)?.[1] || 0);
+
           gsap.to(studioRef.current, {
             fontFamily: progress > 0.5 ? style2.fontFamily : style1.fontFamily,
             fontWeight: Math.round(style1.fontWeight + (style2.fontWeight - style1.fontWeight) * progress),
@@ -123,16 +132,10 @@ export default function Navbar() {
             textShadow: progress > 0.5 ? style2.textShadow : style1.textShadow,
             filter: progress > 0.5 ? style2.filter : style1.filter,
             fontStyle: progress > 0.5 ? style2.fontStyle : style1.fontStyle,
-            scale: style1.scale + (style2.scale - style1.scale) * progress,
-            rotation: parseFloat(style1.transform.match(/rotate\(([-\d.]+)deg\)/)?.[1] || 0) + 
-                     (parseFloat(style2.transform.match(/rotate\(([-\d.]+)deg\)/)?.[1] || 0) - 
-                      parseFloat(style1.transform.match(/rotate\(([-\d.]+)deg\)/)?.[1] || 0)) * progress,
-            skewX: parseFloat(style1.transform.match(/skewX\(([-\d.]+)deg\)/)?.[1] || 0) + 
-                   (parseFloat(style2.transform.match(/skewX\(([-\d.]+)deg\)/)?.[1] || 0) - 
-                    parseFloat(style1.transform.match(/skewX\(([-\d.]+)deg\)/)?.[1] || 0)) * progress,
-            skewY: parseFloat(style1.transform.match(/skewY\(([-\d.]+)deg\)/)?.[1] || 0) + 
-                   (parseFloat(style2.transform.match(/skewY\(([-\d.]+)deg\)/)?.[1] || 0) - 
-                    parseFloat(style1.transform.match(/skewY\(([-\d.]+)deg\)/)?.[1] || 0)) * progress,
+            scale: scale1 + (scale2 - scale1) * progress,
+            rotation: rotate1 + (rotate2 - rotate1) * progress,
+            skewX: skewX1 + (skewX2 - skewX1) * progress,
+            skewY: skewY1 + (skewY2 - skewY1) * progress,
             duration: 0.12,
             ease: "power1.out",
             overwrite: "auto",
