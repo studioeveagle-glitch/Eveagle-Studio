@@ -94,8 +94,19 @@ export default function Contact({ isLoaded }: ContactProps) {
 
   return (
     <section id="contact" ref={sectionRef} className="relative w-full bg-eveagle-bg py-24 lg:py-32 overflow-hidden">
-      {/* Background decoration */}
+      {/* Top border line */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-eveagle-accent/30 to-transparent" />
+      
+      {/* Background decoration */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-eveagle-accent/5 rounded-full blur-3xl" />
+      
+      {/* Dot pattern */}
+      <div className="absolute inset-0 opacity-[0.15]">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle, #FF4D2E 1px, transparent 1px)`,
+          backgroundSize: '30px 30px'
+        }} />
+      </div>
       
       <div className="w-full px-6 lg:px-20">
         {/* Header */}

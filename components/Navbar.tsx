@@ -101,10 +101,10 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "About", href: "#about" },
     { name: "Services", href: "#services" },
     { name: "Process", href: "#process" },
-    { name: "Contact", href: "#contact" },
+    { name: "Agents", href: "#agents" },
+    { name: "FAQ", href: "#faq" },
   ];
 
   const scrollToSection = (href: string) => {
@@ -160,7 +160,7 @@ export default function Navbar() {
               onClick={() => scrollToSection("#contact")}
               className="btn-primary text-sm"
             >
-              Start Project
+              Start Sprint
             </button>
           </div>
 

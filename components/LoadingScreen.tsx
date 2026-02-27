@@ -7,42 +7,73 @@ interface LoadingScreenProps {
 }
 
 export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
-  const [progress, setProgress] = useState(0);
+  const [displayed, setDisplayed] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+  const [show, setShow] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(onLoadingComplete, 300);
-          return 100;
-        }
-        return prev + Math.random() * 20 + 8;
-      });
-    }, 80);
+    setMounted(true);
+  }, []);
 
-    return () => clearInterval(interval);
-  }, [onLoadingComplete]);
+  useEffect(() => {
+    if (!mounted) return;
+
+    const text = "Eveagle";
+    let index = 0;
+
+    // Type out letters
+    const typeInterval = setInterval(() => {
+      if (index < text.length) {
+        setDisplayed(text.slice(0, index + 1));
+        index++;
+      } else {
+        clearInterval(typeInterval);
+        // Blink cursor a few times then complete
+        setTimeout(() => {
+          setShowCursor(false);
+          setTimeout(() => {
+            setShow(false);
+            setTimeout(onLoadingComplete, 300);
+          }, 400);
+        }, 600);
+      }
+    }, 120);
+
+    return () => clearInterval(typeInterval);
+  }, [mounted, onLoadingComplete]);
+
+  // Cursor blink
+  useEffect(() => {
+    if (!mounted || displayed === "Eveagle") return;
+    
+    const blinkInterval = setInterval(() => {
+      setShowCursor(prev => !prev);
+    }, 530);
+
+    return () => clearInterval(blinkInterval);
+  }, [mounted, displayed]);
+
+  if (!mounted || !show) return null;
 
   return (
-    <div
-      className={`fixed inset-0 z-[9999] bg-eveagle-bg flex items-center justify-center transition-opacity duration-300 ${
-        progress >= 100 ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
+    <div 
+      className="fixed inset-0 z-[9999] bg-[#0B0B0D] flex items-center justify-center"
+      style={{ opacity: show ? 1 : 0, transition: 'opacity 0.3s ease' }}
     >
-      <div className="flex flex-col items-center gap-4">
-        {/* Simple brand text */}
-        <div className="font-display text-3xl font-bold text-eveagle-text">
-          Eveagle
-        </div>
-        
-        {/* Minimal progress line */}
-        <div className="w-24 h-[2px] bg-eveagle-bg-secondary rounded-full overflow-hidden">
-          <div
-            className="h-full bg-eveagle-accent transition-all duration-100"
-            style={{ width: `${Math.min(progress, 100)}%` }}
-          />
-        </div>
+      <div className="flex items-baseline">
+        <span className="font-display text-5xl md:text-7xl font-bold text-white tracking-tight">
+          {displayed}
+        </span>
+        <span 
+          className="font-display text-5xl md:text-7xl font-bold text-eveagle-accent ml-0.5"
+          style={{ 
+            opacity: showCursor ? 1 : 0,
+            transition: 'opacity 0.1s'
+          }}
+        >
+          .
+        </span>
       </div>
     </div>
   );
