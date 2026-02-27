@@ -5,25 +5,62 @@ import { Menu, X } from "lucide-react";
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
 
+// Array of fonts to cycle through
+const fonts = [
+  "font-mono",
+  "font-sans",
+  "font-serif",
+  "font-display",
+];
+
+// Font style variations for inline styles
+const fontFamilies = [
+  "monospace",
+  "system-ui",
+  "Georgia",
+  "Impact",
+  "Courier New",
+  "Arial Black",
+];
+
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [displayText, setDisplayText] = useState("Studio");
+  const [currentFont, setCurrentFont] = useState(0);
+  const [letterFonts, setLetterFonts] = useState<number[]>([0, 0, 0, 0, 0]);
   const targetText = "Studio";
   const animationRef = useRef<number>();
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
+      const scrollDelta = scrollY - lastScrollY.current;
       setIsScrolled(scrollY > 50);
 
-      // Trigger letter scramble on scroll
-      scrambleText();
+      // Change font based on scroll position
+      const fontIndex = Math.floor(scrollY / 150) % fontFamilies.length;
+      setCurrentFont(fontIndex);
+
+      // Each letter gets a different font based on scroll + position
+      setLetterFonts(
+        targetText.split("").map((_, i) => 
+          Math.floor((scrollY + i * 50) / 100) % fontFamilies.length
+        )
+      );
+
+      // Trigger letter scramble on significant scroll
+      if (Math.abs(scrollDelta) > 5) {
+        scrambleText();
+      }
+
+      lastScrollY.current = scrollY;
     };
 
     const scrambleText = () => {
       let iteration = 0;
-      const maxIterations = 10;
+      const maxIterations = 8;
       
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
@@ -93,8 +130,18 @@ export default function Navbar() {
           >
             <span>Eveagle</span>
             <span className="text-eveagle-accent">.</span>
-            <span className="inline-block font-mono">
-              {displayText}
+            <span className="inline-block">
+              {displayText.split("").map((char, i) => (
+                <span
+                  key={i}
+                  style={{
+                    fontFamily: fontFamilies[letterFonts[i] || 0],
+                    transition: "font-family 0.3s ease",
+                  }}
+                >
+                  {char}
+                </span>
+              ))}
             </span>
           </a>
 
