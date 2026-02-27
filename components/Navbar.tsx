@@ -3,29 +3,64 @@
 import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const studioRef = useRef<HTMLSpanElement>(null);
+  const [displayText, setDisplayText] = useState("Studio");
+  const targetText = "Studio";
+  const animationRef = useRef<number>();
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       setIsScrolled(scrollY > 50);
 
-      // Smooth roll effect based on scroll
-      if (studioRef.current) {
-        const totalHeight = document.body.scrollHeight - window.innerHeight || 1;
-        const progress = scrollY / totalHeight;
-        // Full 360 degree roll as you scroll through page
-        const rotation = progress * 360;
-        
-        studioRef.current.style.transform = `rotate(${rotation}deg)`;
+      // Trigger letter scramble on scroll
+      scrambleText();
+    };
+
+    const scrambleText = () => {
+      let iteration = 0;
+      const maxIterations = 10;
+      
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
       }
+
+      const animate = () => {
+        setDisplayText(
+          targetText
+            .split("")
+            .map((char, index) => {
+              if (index < iteration / 2) {
+                return targetText[index];
+              }
+              return letters[Math.floor(Math.random() * letters.length)];
+            })
+            .join("")
+        );
+
+        iteration++;
+
+        if (iteration < maxIterations) {
+          animationRef.current = requestAnimationFrame(animate);
+        } else {
+          setDisplayText(targetText);
+        }
+      };
+
+      animate();
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
   }, []);
 
   const navLinks = [
@@ -54,16 +89,12 @@ export default function Navbar() {
           {/* Logo */}
           <a
             href="#"
-            className="font-display text-2xl font-bold text-eveagle-text tracking-tight hover:text-eveagle-accent transition-colors flex items-baseline gap-0"
+            className="font-display text-2xl font-bold text-eveagle-text tracking-tight hover:text-eveagle-accent transition-colors"
           >
             <span>Eveagle</span>
             <span className="text-eveagle-accent">.</span>
-            <span 
-              ref={studioRef}
-              className="inline-block origin-center transition-transform duration-100 will-change-transform"
-              style={{ display: "inline-block" }}
-            >
-              Studio
+            <span className="inline-block font-mono">
+              {displayText}
             </span>
           </a>
 
