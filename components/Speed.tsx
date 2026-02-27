@@ -110,7 +110,7 @@ export default function Speed({ isLoaded }: SpeedProps) {
     <div className="compare-item">
       <h3 className="font-display text-lg md:text-xl font-bold text-eveagle-text mb-4 md:mb-6">{title}</h3>
       
-      {/* Traditional - Vertical on mobile, horizontal on desktop */}
+      {/* Traditional */}
       <div className="mb-4 md:mb-6">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-7 h-7 md:w-8 md:h-8 bg-eveagle-bg rounded-sm flex items-center justify-center">
@@ -120,7 +120,7 @@ export default function Speed({ isLoaded }: SpeedProps) {
           <span className="ml-auto text-xs md:text-sm text-red-400 font-mono font-bold">Months</span>
         </div>
         
-        {/* Mobile: Vertical stack */}
+        {/* Mobile */}
         <div className="flex flex-col gap-1 md:hidden">
           {without.map((item, i) => (
             <div 
@@ -133,12 +133,12 @@ export default function Speed({ isLoaded }: SpeedProps) {
           ))}
         </div>
         
-        {/* Desktop: Horizontal bars */}
+        {/* Desktop with rhythmic pulse */}
         <div className="hidden md:flex h-14 bg-eveagle-bg rounded-sm overflow-hidden">
           {without.map((item, i) => (
             <div 
               key={i} 
-              className="flex-1 bg-eveagle-bg-secondary border-r border-eveagle-bg flex flex-col items-center justify-center relative group p-1"
+              className="flex-1 bg-eveagle-bg-secondary border-r border-eveagle-bg flex flex-col items-center justify-center relative p-1"
             >
               <span className="text-[9px] lg:text-[10px] text-eveagle-text-muted font-medium text-center leading-tight">{item.stage}</span>
               <span className="text-[8px] lg:text-[9px] text-eveagle-text-muted/50 font-mono">{item.time}</span>
@@ -154,7 +154,7 @@ export default function Speed({ isLoaded }: SpeedProps) {
         </div>
       </div>
 
-      {/* With Eveagle */}
+      {/* With Eveagle - Rhythmic light effect */}
       <div>
         <div className="flex items-center gap-2 mb-3">
           <div className="w-7 h-7 md:w-8 md:h-8 bg-eveagle-accent/20 rounded-sm flex items-center justify-center">
@@ -164,34 +164,79 @@ export default function Speed({ isLoaded }: SpeedProps) {
           <span className="ml-auto text-xs md:text-sm text-eveagle-accent font-mono font-bold">Days</span>
         </div>
         
-        {/* Mobile: Vertical stack */}
+        {/* Mobile with pulse */}
         <div className="flex flex-col gap-1 md:hidden">
           {withEveagle.map((item, i) => (
             <div 
               key={i} 
-              className={`flex items-center justify-between rounded-sm p-2 ${accent === "blue" ? "bg-blue-500" : "bg-purple-500"}`}
-              style={{ opacity: 0.5 + (i * 0.1) }}
+              className={`flex items-center justify-between rounded-sm p-2 relative overflow-hidden ${accent === "blue" ? "bg-blue-500" : "bg-purple-500"}`}
+              style={{ 
+                animation: `pulseBar 2s ease-in-out ${i * 0.2}s infinite`,
+              }}
             >
-              <span className="text-xs text-white font-medium">{item.stage}</span>
-              <span className="text-[10px] text-white/70 font-mono">{item.time}</span>
+              {/* Light sweep effect */}
+              <div 
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                style={{
+                  animation: `lightSweep 2s ease-in-out ${i * 0.2}s infinite`,
+                  transform: 'translateX(-100%)',
+                }}
+              />
+              <span className="text-xs text-white font-medium relative z-10">{item.stage}</span>
+              <span className="text-[10px] text-white/70 font-mono relative z-10">{item.time}</span>
             </div>
           ))}
         </div>
         
-        {/* Desktop: Horizontal bars */}
+        {/* Desktop - Rhythmic wave bars */}
         <div className="hidden md:flex h-14 bg-eveagle-bg rounded-sm overflow-hidden border border-eveagle-accent/30">
           {withEveagle.map((item, i) => (
             <div 
               key={i} 
-              className={`flex-1 ${accent === "blue" ? "bg-blue-500" : "bg-purple-500"} border-r border-eveagle-bg/30 flex flex-col items-center justify-center relative group p-1`}
-              style={{ opacity: 0.5 + (i * 0.1) }}
+              className={`flex-1 ${accent === "blue" ? "bg-blue-500" : "bg-purple-500"} border-r border-eveagle-bg/30 flex flex-col items-center justify-center relative overflow-hidden`}
+              style={{
+                animation: `pulseBar 2s ease-in-out ${i * 0.15}s infinite`,
+              }}
             >
-              <span className="text-[9px] lg:text-[10px] text-white font-medium text-center leading-tight">{item.stage}</span>
-              <span className="text-[8px] lg:text-[9px] text-white/70 font-mono">{item.time}</span>
+              {/* Rhythmic light sweep */}
+              <div 
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                style={{
+                  animation: `lightSweep 2s ease-in-out ${i * 0.15}s infinite`,
+                }}
+              />
+              
+              {/* Glow dot */}
+              <div 
+                className="absolute top-1 right-1 w-1.5 h-1.5 bg-white rounded-full"
+                style={{
+                  animation: `dotPulse 1s ease-in-out ${i * 0.15}s infinite`,
+                  boxShadow: '0 0 10px rgba(255,255,255,0.8)',
+                }}
+              />
+              
+              <span className="text-[9px] lg:text-[10px] text-white font-medium text-center leading-tight relative z-10">{item.stage}</span>
+              <span className="text-[8px] lg:text-[9px] text-white/70 font-mono relative z-10">{item.time}</span>
             </div>
           ))}
         </div>
       </div>
+      
+      <style jsx>{`
+        @keyframes pulseBar {
+          0%, 100% { opacity: 0.7; }
+          50% { opacity: 1; }
+        }
+        @keyframes lightSweep {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(100%); }
+          100% { transform: translateX(100%); }
+        }
+        @keyframes dotPulse {
+          0%, 100% { opacity: 0.4; transform: scale(0.8); }
+          50% { opacity: 1; transform: scale(1.2); }
+        }
+      `}</style>
     </div>
   );
 
