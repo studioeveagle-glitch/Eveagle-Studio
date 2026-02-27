@@ -30,7 +30,7 @@ export default function Navbar() {
   const [currentFont, setCurrentFont] = useState(0);
   const [letterFonts, setLetterFonts] = useState<number[]>([0, 0, 0, 0, 0]);
   const targetText = "Studio";
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
